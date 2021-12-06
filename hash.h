@@ -14,7 +14,7 @@
  *        unordered_set           : A class that represents a hash
  *        unordered_set::iterator : An interator through hash
  * Author
- *    Stephen Costigan
+ *    Stephen Costigan, Alexander Dohms
  ************************************************************************/
 
 #pragma once
