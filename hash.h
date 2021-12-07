@@ -241,42 +241,34 @@ public:
    // 
    // Construct
    //
-   local_iterator()  
-   {
-   }
+   local_iterator() { itList = nullptr; }
    local_iterator(const typename custom::list<T>::iterator& itList) 
    {
+
    }
-   local_iterator(const local_iterator& rhs) 
-   { 
-   }
+   local_iterator(const local_iterator& rhs) { itList = rhs.itList; }
 
    //
    // Assign
    //
    local_iterator& operator = (const local_iterator& rhs)
    {
+      this->itList = rhs.itList;
       return *this;
    }
 
    // 
    // Compare
    //
-   bool operator != (const local_iterator& rhs) const
-   {
-      return true;
-   }
-   bool operator == (const local_iterator& rhs) const
-   {
-      return true;
-   }
+   bool operator != (const local_iterator& rhs) const { return (rhs.itList != itList ? true : false); }
+   bool operator == (const local_iterator& rhs) const { return (rhs.itList == itList ? true : false); }
 
    // 
    // Access
    //
    T& operator * ()
    {
-      return *(new T());
+      return itList;
    }
 
    // 
