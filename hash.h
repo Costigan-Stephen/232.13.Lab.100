@@ -39,16 +39,20 @@ public:
    //
    unordered_set()
    {
+
    }
    unordered_set(unordered_set&  rhs) 
    {
+
    }
    unordered_set(unordered_set&& rhs) 
    {
+
    }
    template <class Iterator>
    unordered_set(Iterator first, Iterator last)
    {
+
    }
 
    //
@@ -68,6 +72,7 @@ public:
    }
    void swap(unordered_set& rhs)
    {
+        
    }
 
    // 
