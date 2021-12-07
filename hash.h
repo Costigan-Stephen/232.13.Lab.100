@@ -101,7 +101,7 @@ public:
    }
    local_iterator end(size_t iBucket)
    {
-      return local_iterator();
+      return local_iterator(nullptr);
    }
 
    //
@@ -324,6 +324,7 @@ typename unordered_set <T> ::iterator unordered_set<T>::erase(const T& t)
    RETURN itReturn 
    */
     // -- >> itErase.itVector.erase(itErase.itList); // << -- what is itVector
+    itErase.pBucket->erase(itErase.itList); // << -- pBucket must be itVector?
     numElements--;
     return itReturn;
 
@@ -350,11 +351,11 @@ custom::pair<typename custom::unordered_set<T>::iterator, bool> unordered_set<T>
         IF *it = element
             RETURN pair(itHash, FALSE)
     */
-    /*for (iterator it = buckets[iBucket].begin(); it < buckets[iBucket].end() ; it++)
-    {
+    /*for (auto it = buckets[iBucket].begin(); it != buckets[iBucket].end(); it++) {
         if (*it == t)
-            return custom::pair<custom::unordered_set<T>::iterator, bool>(it, false);
-    }*/ 
+            return custom::pair<typename custom::unordered_set<T>::iterator, bool>(*it, false);
+    }*/
+    
 
     /*
     //Reserve more space if we are already at the limit.
