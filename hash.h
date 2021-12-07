@@ -358,11 +358,11 @@ custom::pair<typename custom::unordered_set<T>::iterator, bool> unordered_set<T>
         IF *it = element
             RETURN pair(itHash, FALSE)
     */
-    for (auto it = buckets[iBucket].begin(); it < buckets[iBucket].end() ; it++)
+    /*for (iterator it = buckets[iBucket].begin(); it < buckets[iBucket].end() ; it++)
     {
         if (*it == t)
-            return pair(it, false);
-    }
+            return custom::pair<custom::unordered_set<T>::iterator, bool>(it, false);
+    }*/ 
 
     /*
     //Reserve more space if we are already at the limit.
