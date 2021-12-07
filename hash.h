@@ -123,7 +123,11 @@ public:
    // 
    // Remove - Steve
    //
-   void clear() noexcept { numElements = 0; }
+   void clear() noexcept { 
+       for (auto bucket : buckets)
+            bucket.clear();
+       numElements = 0; 
+   }
    iterator erase(const T& t);
 
    //
@@ -303,7 +307,35 @@ private:
 template <typename T>
 typename unordered_set <T> ::iterator unordered_set<T>::erase(const T& t)
 {
-   return iterator();
+   /*
+   //Find the element to be erased. Return end() if the element is not present.
+   itErase = find(element)
+   IF itErase = end()
+     RETURN itErase 
+   */
+    iterator itErase = find(t);
+    if (itErase == end())
+        return itErase;
+
+   /*
+   //Determine the return value.
+   itReturn = itErase
+   itReturn++
+   */
+    iterator itReturn = itErase;
+    itReturn++;
+   
+   /*
+   //Erase the element from the bucket.
+   itErase.itVector.erase(itErase.itList)
+   numElements--
+   RETURN itReturn 
+   */
+    // -- >> itErase.itVector.erase(itErase.itList); // << -- what is itVector
+    numElements--;
+    return itReturn;
+
+   //return iterator();
 }
 
 /*****************************************
