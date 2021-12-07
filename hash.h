@@ -123,30 +123,21 @@ public:
    // 
    // Remove - Steve
    //
-   void clear() noexcept
-   {
-
-   }
+   void clear() noexcept { numElements = 0; }
    iterator erase(const T& t);
 
    //
    // Status
    //
-   size_t size() const 
-   { 
-      return 99;
-   }
-   bool empty() const 
-   { 
-      return false;
-   }
+   size_t size() const { return numElements; }
+   bool empty() const  { return numElements == 0; }
    size_t bucket_count() const 
    { 
-      return 100;
+      return buckets->size(); 
    }
    size_t bucket_size(size_t i) const
    {
-      return 99;
+      return buckets[i].size(); // Steve, guessing here, but brought % up
    }
 
 
@@ -322,12 +313,46 @@ typename unordered_set <T> ::iterator unordered_set<T>::erase(const T& t)
 template <typename T>
 custom::pair<typename custom::unordered_set<T>::iterator, bool> unordered_set<T>::insert(const T& t)
 {
+    /*
+    //Find the bucket where the new element is to reside.
+    iBucket = bucket(element)
+    //See if the element is already there. If so, then return out.
+    FOR it = buckets[iBucket].begin() … buckets[iBucket].end()
+        IF *it = element
+            RETURN pair(itHash, FALSE)
+    //Reserve more space if we are already at the limit.
+     
+    IF min_buckets_required(numElements + 1) > bucket_count()
+        reserve(numElements x 2)
+        iBucket = bucket(element)
+     
+    //Actually insert the new element on the back of the bucket.
+    buckets[iBucket].push_back(element)
+    numElements++
+    RETURN pair(itHash, TRUE)
+   */
    return custom::pair<custom::unordered_set<T>::iterator, bool>(iterator(), true);
 }
 template <typename T>
 void unordered_set<T>::insert(const std::initializer_list<T> & il)
 {
+    // REHASH
+    /*
+    If the current bucket count is sufficient, then do nothing.
+    IF numBuckets <= bucket_count()
+        RETURN
 
+    //Create a new hash bucket.
+    bucketNew = ALLOCATE(numBuckets)
+    
+    //Insert the elmements into the new hash table, one at a time.
+    FOREACH element IN hash
+        bucketsNew[hash(element) % numBuckets].push_back(element)
+
+    //Swap the old bucket for the new.
+    swap(buckets, bucketsNew)
+
+    */
 }
 
 /*****************************************
