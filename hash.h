@@ -35,7 +35,7 @@ class unordered_set
 {
 public:
    //
-   // Construct
+   // Construct - Shaun
    //
    unordered_set()
    {
@@ -52,21 +52,28 @@ public:
    template <class Iterator>
    unordered_set(Iterator first, Iterator last)
    {
-
+       /*pHead = pTail = nullptr;
+       numElements = 0;
+       auto it = first;
+       while (it != last)
+       {
+           push_back(*it);
+           it++;
+       }*/
    }
 
    //
-   // Assign
+   // Assign - Alex
    //
-   unordered_set& operator=(unordered_set& rhs)
+   unordered_set& operator = (unordered_set& rhs)
    {
       return *this;
    }
-   unordered_set& operator=(unordered_set&& rhs)
+   unordered_set& operator = (unordered_set&& rhs)
    {
       return *this;
    }
-   unordered_set& operator=(const std::initializer_list<T>& il)
+   unordered_set& operator = (const std::initializer_list<T>& il)
    {
       return *this;
    }
@@ -98,7 +105,7 @@ public:
    }
 
    //
-   // Access
+   // Access - Jon
    //
    size_t bucket(const T& t)
    {
@@ -107,17 +114,18 @@ public:
    iterator find(const T& t);
 
    //   
-   // Insert
+   // Insert - Steve
    //
    custom::pair<iterator, bool> insert(const T& t);
    void insert(const std::initializer_list<T> & il);
 
 
    // 
-   // Remove
+   // Remove - Steve
    //
    void clear() noexcept
    {
+
    }
    iterator erase(const T& t);
 
@@ -166,14 +174,17 @@ public:
    //
    iterator()  
    {  
+
    }
    iterator(typename custom::list<T>* pBucket,
             typename custom::list<T>* pBucketEnd,
             typename custom::list<T>::iterator itList)
    {
+
    }
    iterator(const iterator& rhs) 
    { 
+
    }
 
    //
@@ -316,6 +327,7 @@ custom::pair<typename custom::unordered_set<T>::iterator, bool> unordered_set<T>
 template <typename T>
 void unordered_set<T>::insert(const std::initializer_list<T> & il)
 {
+
 }
 
 /*****************************************
@@ -345,6 +357,7 @@ typename unordered_set <T> ::iterator & unordered_set<T>::iterator::operator ++ 
 template <typename T>
 void swap(unordered_set<T>& lhs, unordered_set<T>& rhs)
 {
+
 }
 
 }
