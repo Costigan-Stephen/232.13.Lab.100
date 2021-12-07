@@ -348,16 +348,33 @@ custom::pair<typename custom::unordered_set<T>::iterator, bool> unordered_set<T>
     /*
     //Find the bucket where the new element is to reside.
     iBucket = bucket(element)
+    */
+
+    auto iBucket = bucket(t);
+
+    /*
     //See if the element is already there. If so, then return out.
     FOR it = buckets[iBucket].begin() … buckets[iBucket].end()
         IF *it = element
             RETURN pair(itHash, FALSE)
+    */
+    for (auto it = buckets[iBucket].begin(); it < buckets[iBucket].end() ; it++)
+    {
+        if (*it == t)
+            return pair(it, false);
+    }
+
+    /*
     //Reserve more space if we are already at the limit.
      
     IF min_buckets_required(numElements + 1) > bucket_count()
         reserve(numElements x 2)
         iBucket = bucket(element)
-     
+    */
+   
+
+
+    /*
     //Actually insert the new element on the back of the bucket.
     buckets[iBucket].push_back(element)
     numElements++
