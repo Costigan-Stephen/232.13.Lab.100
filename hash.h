@@ -245,11 +245,8 @@ public:
    // Construct
    //
    local_iterator() { itList = nullptr; }
-   local_iterator(const typename custom::list<T>::iterator& itList) 
-   {
-
-   }
-   local_iterator(const local_iterator& rhs) { itList = rhs.itList; }
+   local_iterator(const typename custom::list<T>::iterator& itList) { this->itList = itList; }
+   local_iterator(const local_iterator& rhs) { this = rhs; } 
 
    //
    // Assign
@@ -376,7 +373,11 @@ custom::pair<typename custom::unordered_set<T>::iterator, bool> unordered_set<T>
     numElements++
     RETURN pair(itHash, TRUE)
    */
-   return custom::pair<custom::unordered_set<T>::iterator, bool>(iterator(), true);
+
+    buckets[iBucket].push_back(t);
+    numElements++;
+
+    return custom::pair<custom::unordered_set<T>::iterator, bool>(iterator(), true);
 }
 template <typename T>
 void unordered_set<T>::insert(const std::initializer_list<T> & il)
@@ -409,7 +410,7 @@ void unordered_set<T>::insert(const std::initializer_list<T> & il)
     //Swap the old bucket for the new.
     swap(buckets, bucketsNew)
     */
-    swap(buckets, bucketNew);
+    swap(bucketNew);
 }
 
 /*****************************************
