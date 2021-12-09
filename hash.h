@@ -177,10 +177,7 @@ public:
    // 
    // Construct
    //
-   iterator()  
-   {  
-
-   }
+   iterator() { itList = nullptr; }
    iterator(typename custom::list<T>* pBucket,
             typename custom::list<T>* pBucketEnd,
             typename custom::list<T>::iterator itList)
@@ -189,7 +186,7 @@ public:
    }
    iterator(const iterator& rhs) 
    { 
-
+       itList = rhs.itList;
    }
 
    //
@@ -197,7 +194,8 @@ public:
    //
    iterator& operator = (const iterator& rhs)
    {
-      return *this;
+       this->itList = rhs.itList;
+       return *this;
    }
 
    //
@@ -205,11 +203,11 @@ public:
    //
    bool operator != (const iterator& rhs) const 
    { 
-      return true;
+      return (rhs.itList != itList ? true : false);
    }
    bool operator == (const iterator& rhs) const 
    { 
-      return true;
+      return (rhs.itList == itList ? true : false);
    }
 
    // 
@@ -217,7 +215,7 @@ public:
    //
    T& operator * ()
    {
-      return *(new T());
+       return *itList;
    }
 
    //
@@ -402,7 +400,7 @@ void unordered_set<T>::insert(const std::initializer_list<T> & il)
     bucketNew = ALLOCATE(numBuckets)
     */
     
-    custom::list<T> bucketNew = ALLOC(bucket_count()); 
+    custom::list<T> bucketNew = ALLOC(bucket_count());
 
     /*
     //Insert the elmements into the new hash table, one at a time.
@@ -416,7 +414,7 @@ void unordered_set<T>::insert(const std::initializer_list<T> & il)
     //Swap the old bucket for the new.
     swap(buckets, bucketsNew)
     */
-    buckets.swap(bucketNew);
+    swap(buckets, bucketNew);
 }
 
 /*****************************************
@@ -446,7 +444,7 @@ typename unordered_set <T> ::iterator & unordered_set<T>::iterator::operator ++ 
 template <typename T>
 void swap(unordered_set<T>& lhs, unordered_set<T>& rhs)
 {
-   
+
 }
 
 }
