@@ -125,7 +125,7 @@ public:
    //
    size_t bucket(const T& t)
    {
-      return 99;
+      return t % 10;
    }
    iterator find(const T& t);
 
@@ -188,9 +188,11 @@ public:
             typename custom::list<T>* pBucketEnd,
             typename custom::list<T>::iterator itList)
    {
-
+       this->pBucket = pBucket;
+       this->pBucketEnd = pBucketEnd;
+       this->itList = itList;
    }
-   iterator(const iterator& rhs) 
+   iterator(const iterator& rhs)
    { 
        itList = rhs.itList;
    }
@@ -221,7 +223,9 @@ public:
    iterator& operator ++ ();
    iterator operator ++ (int postfix)
    {
-      return *this;
+       auto it = *this;
+       ++(*this);
+       return it;
    }
 
 #ifdef DEBUG // make this visible to the unit tests
@@ -285,7 +289,7 @@ public:
    {
        local_iterator it = *this;
        ++(*this);
-      return it;
+       return it;
    }
 
 #ifdef DEBUG // make this visible to the unit tests
@@ -358,7 +362,7 @@ custom::pair<typename custom::unordered_set<T>::iterator, bool> unordered_set<T>
     */
     /*for (auto it = buckets[iBucket].begin(); it != buckets[iBucket].end(); it++) {
         if (*it == t)
-            return custom::pair<typename custom::unordered_set<T>::iterator, bool>(*it, false);
+            return custom::pair<typename custom::unordered_set<T>::iterator, bool>(it, false);
     }*/
     
 
@@ -434,7 +438,21 @@ typename unordered_set <T> ::iterator unordered_set<T>::find(const T& t)
 template <typename T>
 typename unordered_set <T> ::iterator & unordered_set<T>::iterator::operator ++ ()
 {
-   return *this;
+    if (pBucket == pBucketEnd)
+        return *this;
+
+    itList++;
+    if (itList != pBucket->end())
+        return *this;
+
+    pBucket++;
+    while (pBucket != pBucketEnd && pBucket->empty())
+        pBucket++;
+
+    if (pBucket != pBucketEnd)
+        itList = pBucket->begin();
+
+    return *this;
 }
 
 /*****************************************
