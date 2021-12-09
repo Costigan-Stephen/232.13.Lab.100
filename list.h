@@ -185,10 +185,11 @@ namespace custom
         iterator& operator ++ ()
         {
             iterator it = p;
-            if (p->pNext) {
-                p = p->pNext;
-                return it;
-            }
+            if (p)
+                if (p->pNext) {
+                    p = p->pNext;
+                    return it;
+                }
             p = nullptr;
             return *this;
         }
