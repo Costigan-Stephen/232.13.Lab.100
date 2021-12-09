@@ -39,7 +39,13 @@ public:
    //
    unordered_set()
    {
+<<<<<<< HEAD
        numElements = 0;
+=======
+       //maxLoadFactor = 1.0;
+       numElements = 0;
+       //bucket(8);
+>>>>>>> 8ea863d9b598ded665477e3ce65ece58cf9d3b8d
    }
    unordered_set(unordered_set&  rhs) 
    {
@@ -52,14 +58,14 @@ public:
    template <class Iterator>
    unordered_set(Iterator first, Iterator last)
    {
-       /*pHead = pTail = nullptr;
+       //*pHead = pTail = nullptr;
        numElements = 0;
        auto it = first;
        while (it != last)
        {
-           push_back(*it);
+           insert(*it);
            it++;
-       }*/
+       }
    }
 
    //
@@ -445,7 +451,7 @@ template <typename T>
 void swap(unordered_set<T>& lhs, unordered_set<T>& rhs)
 {
     std::swap(lhs.numElements, rhs.numElements);
-    std::swap(lhs.buckets, rhs.buckets); 
+    std::swap(lhs.buckets, rhs.buckets);  
 }
 
 }
