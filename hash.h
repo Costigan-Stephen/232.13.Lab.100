@@ -429,6 +429,19 @@ void unordered_set<T>::insert(const std::initializer_list<T> & il)
 template <typename T>
 typename unordered_set <T> ::iterator unordered_set<T>::find(const T& t)
 {
+   // Identify the bucket number corresponding to the element.
+   auto iBucket = bucket(t);
+
+   // Identify the bucket number corresponding to the element.
+   //iterator::itList = bucket[iBucket].find(t); Non-Functioning
+
+   /*Create an iterator to return.
+      IF itList != buckets[iBucket].end()
+      RETURN iterator(buckets.end(), itVector(buckets, iBucket), itList)
+      ELSE
+      RETURN end()*/
+
+
    return iterator();
 }
 
