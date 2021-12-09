@@ -192,10 +192,7 @@ public:
        this->pBucketEnd = pBucketEnd;
        this->itList = itList;
    }
-   iterator(const iterator& rhs)
-   {
-       *this = rhs;
-   }
+   iterator(const iterator& rhs) { *this = rhs; }
 
    //
    // Assign
