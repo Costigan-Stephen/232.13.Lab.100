@@ -39,9 +39,9 @@ public:
    //
    unordered_set()
    {
-       maxLoadFactor = 1.0;
+       //maxLoadFactor = 1.0;
        numElements = 0;
-       bucket(8);
+       //bucket(8);
    }
    unordered_set(unordered_set&  rhs) 
    {
@@ -54,14 +54,14 @@ public:
    template <class Iterator>
    unordered_set(Iterator first, Iterator last)
    {
-       /*pHead = pTail = nullptr;
+       //*pHead = pTail = nullptr;
        numElements = 0;
        auto it = first;
        while (it != last)
        {
-           push_back(*it);
+           insert(*it);
            it++;
-       }*/
+       }
    }
 
    //
