@@ -39,11 +39,9 @@ public:
    //
    unordered_set()
    {
-      
        maxLoadFactor = 1.0;
        numElements = 0;
        bucket(8);
-
    }
    unordered_set(unordered_set&  rhs) 
    {
@@ -95,7 +93,7 @@ public:
    }
    void swap(unordered_set& rhs)
    {
-     
+      
    }
 
    // 
@@ -166,9 +164,7 @@ public:
 #else
 private:
 #endif
-   float maxLoadFactor;
-   
-      
+   float maxLoadFactor;            // numElements / bucket_count()
    custom::list<T> buckets [10];   // exactly 10 buckets
    int numElements;                // number of elements in the Hash
 };
