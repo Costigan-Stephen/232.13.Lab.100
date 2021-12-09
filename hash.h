@@ -67,25 +67,21 @@ public:
    //
    unordered_set& operator = (unordered_set& rhs) 
    {
-      /*clear();
-      numElements = rhs.numElements;
-      maxLoadFactor = rhs.maxLoadFactor;
-      swap(rhs);
-      return *this;*/
 
       numElements = rhs.numElements;
       for (int i = 0; i < 10; i++)
-      {
          buckets[i] = rhs.buckets[i];
-      }
+      
       return *this;
    }
    unordered_set& operator = (unordered_set&& rhs)
    {
-      numElements = rhs.numElements;
-      clear();
-      swap(rhs);
-      return *this;
+       numElements = rhs.numElements;
+       rhs.numElements = 0;
+       for (int i = 0; i < 10; i++)
+           buckets[i] = rhs.buckets[i];
+
+       return *this;
    }
    unordered_set& operator = (const std::initializer_list<T>& il) // Initializer List Assign and Fill Assignment
    {
