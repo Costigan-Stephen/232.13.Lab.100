@@ -39,7 +39,7 @@ public:
    //
    unordered_set()
    {
-
+       numElements = 0;
    }
    unordered_set(unordered_set&  rhs) 
    {
@@ -82,10 +82,9 @@ public:
    {
       clear();
       reserve(il.size());
-      for (T t : il)
-      {
+      for (T t : il)      
          insert(t);
-      }
+      
       return *this;
    }
    void swap(unordered_set& rhs)
@@ -146,7 +145,7 @@ public:
    //
    size_t size() const { return numElements; }
    bool empty() const  { return numElements == 0; }
-   size_t bucket_count() const 
+   size_t bucket_count() const
    { 
       return buckets->size(); 
    }
