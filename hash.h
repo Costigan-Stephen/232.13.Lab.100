@@ -39,13 +39,7 @@ public:
    //
    unordered_set()
    {
-<<<<<<< HEAD
        numElements = 0;
-=======
-       //maxLoadFactor = 1.0;
-       numElements = 0;
-       //bucket(8);
->>>>>>> 8ea863d9b598ded665477e3ce65ece58cf9d3b8d
    }
    unordered_set(unordered_set&  rhs) 
    {
@@ -115,11 +109,11 @@ public:
    }
    iterator end()
    {
-      return iterator();
+      return iterator(buckets + 10, buckets+10, buckets[0].end()); 
    }
    local_iterator begin(size_t iBucket)
    {
-      return local_iterator();
+      return local_iterator(buckets[iBucket].begin());
    }
    local_iterator end(size_t iBucket)
    {
