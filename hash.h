@@ -39,7 +39,11 @@ public:
    //
    unordered_set()
    {
+      
+       maxLoadFactor = 1.0;
        numElements = 0;
+       bucket(8);
+
    }
    unordered_set(unordered_set&  rhs) 
    {
@@ -67,8 +71,10 @@ public:
    //
    unordered_set& operator = (unordered_set& rhs) 
    {
+      clear();
       numElements = rhs.numElements;
-      //rbuckets = rhs.buckets;
+      maxLoadFactor = rhs.maxLoadFactor;
+      swap(rhs);
       return *this;
    }
    unordered_set& operator = (unordered_set&& rhs)
@@ -160,7 +166,9 @@ public:
 #else
 private:
 #endif
-
+   float maxLoadFactor;
+   
+      
    custom::list<T> buckets [10];   // exactly 10 buckets
    int numElements;                // number of elements in the Hash
 };
