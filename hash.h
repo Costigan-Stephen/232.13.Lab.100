@@ -385,18 +385,30 @@ void unordered_set<T>::insert(const std::initializer_list<T> & il)
     If the current bucket count is sufficient, then do nothing.
     IF numBuckets <= bucket_count()
         RETURN
-
+    */
+   
+    /*if (bucket_count() <= bucket_count())
+        return;*/
+    /*
     //Create a new hash bucket.
     bucketNew = ALLOCATE(numBuckets)
+    */
     
+    custom::list<T> bucketNew = ALLOC(bucket_count()); 
+
+    /*
     //Insert the elmements into the new hash table, one at a time.
     FOREACH element IN hash
         bucketsNew[hash(element) % numBuckets].push_back(element)
+    */
 
+
+
+    /*
     //Swap the old bucket for the new.
     swap(buckets, bucketsNew)
-
     */
+    buckets.swap(bucketNew);
 }
 
 /*****************************************
