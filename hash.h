@@ -39,9 +39,9 @@ public:
    //
    unordered_set()
    {
-       //maxLoadFactor = 1.0;
+       maxLoadFactor = 1.0;
        numElements = 0;
-       //buckets(8);
+       bucket(8);
    }
    unordered_set(unordered_set&  rhs) 
    {
@@ -67,21 +67,33 @@ public:
    //
    // Assign - Alex
    //
-   unordered_set& operator = (unordered_set& rhs)
+   unordered_set& operator = (unordered_set& rhs) 
    {
+      clear();
+      numElements = rhs.numElements;
+      maxLoadFactor = rhs.maxLoadFactor;
+      swap(rhs);
       return *this;
    }
    unordered_set& operator = (unordered_set&& rhs)
    {
+      numElements = rhs.numElements;
+      clear();
+      swap(rhs);
       return *this;
    }
-   unordered_set& operator = (const std::initializer_list<T>& il)
+   unordered_set& operator = (const std::initializer_list<T>& il) // Initializer List Assign and Fill Assignment
    {
+      clear();
+      reserve(il.size());
+      for (T t : il)      
+         insert(t);
+      
       return *this;
    }
    void swap(unordered_set& rhs)
    {
-        
+      
    }
 
    // 
@@ -137,13 +149,13 @@ public:
    //
    size_t size() const { return numElements; }
    bool empty() const  { return numElements == 0; }
-   size_t bucket_count() const 
+   size_t bucket_count() const
    { 
       return buckets->size(); 
    }
    size_t bucket_size(size_t i) const
    {
-      return buckets[i].size(); // Steve, guessing here, but brought % up
+      return buckets[i].size(); // Steve, guessing here, but brought % up -- Nice guess bro
    }
 
 
@@ -152,7 +164,7 @@ public:
 #else
 private:
 #endif
-
+   float maxLoadFactor;            // numElements / bucket_count()
    custom::list<T> buckets [10];   // exactly 10 buckets
    int numElements;                // number of elements in the Hash
 };
@@ -169,10 +181,7 @@ public:
    // 
    // Construct
    //
-   iterator()  
-   {  
-
-   }
+   iterator() { itList = nullptr; }
    iterator(typename custom::list<T>* pBucket,
             typename custom::list<T>* pBucketEnd,
             typename custom::list<T>::iterator itList)
@@ -181,7 +190,7 @@ public:
    }
    iterator(const iterator& rhs) 
    { 
-
+       itList = rhs.itList;
    }
 
    //
@@ -189,28 +198,20 @@ public:
    //
    iterator& operator = (const iterator& rhs)
    {
-      return *this;
+       this->itList = rhs.itList;
+       return *this;
    }
 
    //
    // Compare
    //
-   bool operator != (const iterator& rhs) const 
-   { 
-      return true;
-   }
-   bool operator == (const iterator& rhs) const 
-   { 
-      return true;
-   }
+   bool operator != (const iterator& rhs) const { return (rhs.itList != itList ? true : false); }
+   bool operator == (const iterator& rhs) const { return (rhs.itList == itList ? true : false); }
 
    // 
    // Access
    //
-   T& operator * ()
-   {
-      return *(new T());
-   }
+   T& operator * () { return *itList; }
 
    //
    // Arithmetic
@@ -385,18 +386,30 @@ void unordered_set<T>::insert(const std::initializer_list<T> & il)
     If the current bucket count is sufficient, then do nothing.
     IF numBuckets <= bucket_count()
         RETURN
-
+    */
+   
+    /*if (bucket_count() <= bucket_count())
+        return;*/
+    /*
     //Create a new hash bucket.
     bucketNew = ALLOCATE(numBuckets)
+    */
     
+    custom::list<T> bucketNew = ALLOC(bucket_count());
+
+    /*
     //Insert the elmements into the new hash table, one at a time.
     FOREACH element IN hash
         bucketsNew[hash(element) % numBuckets].push_back(element)
+    */
 
+
+
+    /*
     //Swap the old bucket for the new.
     swap(buckets, bucketsNew)
-
     */
+    swap(buckets, bucketNew);
 }
 
 /*****************************************
