@@ -379,8 +379,8 @@ custom::pair<typename custom::unordered_set<T>::iterator, bool> unordered_set<T>
     */
     //std::cout << t << std::endl;
     auto it = buckets[iBucket].begin();
-    std::string s = typeid(it).name();
-    std::cout << s << std::endl;
+    std::string s = typeid(it).name(); // data type of auto
+    //std::cout << s << std::endl;
 
     while (it != buckets[iBucket].end())
     {
