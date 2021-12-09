@@ -39,7 +39,9 @@ public:
    //
    unordered_set()
    {
-
+       //maxLoadFactor = 1.0;
+       numElements = 0;
+       //buckets(8);
    }
    unordered_set(unordered_set&  rhs) 
    {
