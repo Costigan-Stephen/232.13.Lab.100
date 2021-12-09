@@ -209,22 +209,13 @@ public:
    //
    // Compare
    //
-   bool operator != (const iterator& rhs) const 
-   { 
-      return (rhs.itList != itList ? true : false);
-   }
-   bool operator == (const iterator& rhs) const 
-   { 
-      return (rhs.itList == itList ? true : false);
-   }
+   bool operator != (const iterator& rhs) const { return (rhs.itList != itList ? true : false); }
+   bool operator == (const iterator& rhs) const { return (rhs.itList == itList ? true : false); }
 
    // 
    // Access
    //
-   T& operator * ()
-   {
-       return *itList;
-   }
+   T& operator * () { return *itList; }
 
    //
    // Arithmetic
