@@ -39,9 +39,7 @@ public:
    //
    unordered_set()
    {
-       maxLoadFactor = 1.0;
        numElements = 0;
-       bucket(8);
    }
    unordered_set(unordered_set&  rhs) 
    {
@@ -49,7 +47,7 @@ public:
    }
    unordered_set(unordered_set&& rhs) 
    {
-       *this = move(rhs);
+       *this = std::move(rhs);
    }
    template <class Iterator>
    unordered_set(Iterator first, Iterator last)
@@ -93,7 +91,11 @@ public:
    }
    void swap(unordered_set& rhs)
    {
-      
+       /*unordered_set swap = rhs;
+       rhs = *this;
+       *this = swap;*/
+       std::swap(this->numElements, rhs.numElements);
+       std::swap(this->buckets, rhs.buckets);
    }
 
    // 
@@ -276,11 +278,14 @@ public:
    //
    local_iterator& operator ++ ()
    {
-      return *this;
+       itList++;
+       return *this;
    }
    local_iterator operator ++ (int postfix)
    {
-      return *this;
+       local_iterator it = *this;
+       ++(*this);
+      return it;
    }
 
 #ifdef DEBUG // make this visible to the unit tests
@@ -366,7 +371,6 @@ custom::pair<typename custom::unordered_set<T>::iterator, bool> unordered_set<T>
     */
    
 
-
     /*
     //Actually insert the new element on the back of the bucket.
     buckets[iBucket].push_back(element)
@@ -440,7 +444,8 @@ typename unordered_set <T> ::iterator & unordered_set<T>::iterator::operator ++ 
 template <typename T>
 void swap(unordered_set<T>& lhs, unordered_set<T>& rhs)
 {
-
+    std::swap(lhs.numElements, rhs.numElements);
+    std::swap(lhs.buckets, rhs.buckets); 
 }
 
 }
