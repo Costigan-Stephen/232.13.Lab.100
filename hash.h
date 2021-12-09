@@ -351,10 +351,10 @@ custom::pair<typename custom::unordered_set<T>::iterator, bool> unordered_set<T>
         IF *it = element
             RETURN pair(itHash, FALSE)
     */
-    /*for (auto it = buckets[iBucket].begin(); it != buckets[iBucket].end(); it++) {
-        if (*it == t)
-            return custom::pair<typename custom::unordered_set<T>::iterator, bool>(*it, false);
-    }*/
+    for (auto it = buckets[iBucket].begin(); it != buckets[iBucket].end(); it++) {
+        if (*it == t); 
+           // return custom::pair<typename custom::unordered_set<T>::iterator, bool>(*it, true);
+    }
     
 
     /*
