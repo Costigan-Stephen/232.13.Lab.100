@@ -39,9 +39,7 @@ public:
    //
    unordered_set()
    {
-       //maxLoadFactor = 1.0;
-       numElements = 0;
-       //buckets(8);
+
    }
    unordered_set(unordered_set&  rhs) 
    {
@@ -67,21 +65,32 @@ public:
    //
    // Assign - Alex
    //
-   unordered_set& operator = (unordered_set& rhs)
+   unordered_set& operator = (unordered_set& rhs) 
    {
+      numElements = rhs.numElements;
+      //rbuckets = rhs.buckets;
       return *this;
    }
    unordered_set& operator = (unordered_set&& rhs)
    {
+      numElements = rhs.numElements;
+      clear();
+      swap(rhs);
       return *this;
    }
-   unordered_set& operator = (const std::initializer_list<T>& il)
+   unordered_set& operator = (const std::initializer_list<T>& il) // Initializer List Assign and Fill Assignment
    {
+      clear();
+      reserve(il.size());
+      for (T t : il)
+      {
+         insert(t);
+      }
       return *this;
    }
    void swap(unordered_set& rhs)
    {
-        
+     
    }
 
    // 
@@ -143,7 +152,7 @@ public:
    }
    size_t bucket_size(size_t i) const
    {
-      return buckets[i].size(); // Steve, guessing here, but brought % up
+      return buckets[i].size(); // Steve, guessing here, but brought % up -- Nice guess bro
    }
 
 
@@ -353,10 +362,10 @@ custom::pair<typename custom::unordered_set<T>::iterator, bool> unordered_set<T>
         IF *it = element
             RETURN pair(itHash, FALSE)
     */
-    for (auto it = buckets[iBucket].begin(); it != buckets[iBucket].end(); it++) {
-        if (*it == t); 
-           // return custom::pair<typename custom::unordered_set<T>::iterator, bool>(*it, true);
-    }
+    /*for (auto it = buckets[iBucket].begin(); it != buckets[iBucket].end(); it++) {
+        if (*it == t)
+            return custom::pair<typename custom::unordered_set<T>::iterator, bool>(*it, false);
+    }*/
     
 
     /*
@@ -438,7 +447,7 @@ typename unordered_set <T> ::iterator & unordered_set<T>::iterator::operator ++ 
 template <typename T>
 void swap(unordered_set<T>& lhs, unordered_set<T>& rhs)
 {
-
+   
 }
 
 }
