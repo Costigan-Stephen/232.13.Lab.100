@@ -352,12 +352,9 @@ typename unordered_set <T> ::iterator unordered_set<T>::erase(const T& t)
    numElements--
    RETURN itReturn 
    */
-    // -- >> itErase.itVector.erase(itErase.itList); // << -- what is itVector
     itErase.pBucket->erase(itErase.itList); // << -- pBucket must be itVector?
     numElements--;
-    return itReturn;
-
-   //return iterator();
+    return itReturn; 
 }
 
 /*****************************************
@@ -458,7 +455,7 @@ void unordered_set<T>::insert(const std::initializer_list<T> & il)
 template <typename T>
 typename unordered_set <T> ::iterator unordered_set<T>::find(const T& t)
 {
-   return iterator();
+   return end();
 }
 
 /*****************************************
