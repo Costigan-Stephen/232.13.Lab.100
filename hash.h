@@ -75,16 +75,16 @@ public:
    }
    unordered_set& operator = (unordered_set&& rhs)
    {
-       numElements = rhs.numElements;
-       rhs.numElements = 0;
+       numElements = std::move(rhs.numElements);
+       rhs.numElements = NULL;
        for (int i = 0; i < 10; i++)
-           buckets[i] = rhs.buckets[i];
+           buckets[i] = std::move(rhs.buckets[i]);
 
        return *this;
    }
    unordered_set& operator = (const std::initializer_list<T>& il) // Initializer List Assign and Fill Assignment
    {
-      clear();
+      //clear();
       reserve(il.size());
       for (T t : il)      
          insert(t);
@@ -121,7 +121,7 @@ public:
             RETURN iterator(buckets.end(), itBucket, itBucket.begin())
        RETURN end()
          */
-       auto itBucket = buckets[0].begin();
+       auto itBucket = buckets[0].begin(); 
        /*while ( itBucket < buckets[0].end()) {
            if (*itBucket.size() > 0)
                return iterator(buckets + 10, itBucket, itBucket->begin());
@@ -161,7 +161,7 @@ public:
    // Remove - Steve
    //
    void clear() noexcept { 
-       for (auto bucket : buckets)
+       for (auto& bucket : buckets)
             bucket.clear();
        numElements = 0; 
    }
@@ -174,7 +174,7 @@ public:
    bool empty() const  { return numElements == 0; }
    size_t bucket_count() const
    { 
-      return buckets->size(); 
+      return numElements; 
    }
    size_t bucket_size(size_t i) const
    {
@@ -471,13 +471,13 @@ typename unordered_set <T> ::iterator & unordered_set<T>::iterator::operator ++ 
     if (pBucket == pBucketEnd)
         return *this;
 
-    itList++;
+    ++itList;
     if (itList != pBucket->end())
         return *this;
 
-    pBucket++;
+    ++pBucket;
     while (pBucket != pBucketEnd && pBucket->empty())
-        pBucket++;
+        ++pBucket;
 
     if (pBucket != pBucketEnd)
         itList = pBucket->begin();
