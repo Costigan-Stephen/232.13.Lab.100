@@ -45,11 +45,11 @@ public:
    }
    unordered_set(unordered_set&  rhs) 
    {
-
+       *this = rhs;
    }
    unordered_set(unordered_set&& rhs) 
    {
-
+       *this = move(rhs);
    }
    template <class Iterator>
    unordered_set(Iterator first, Iterator last)
