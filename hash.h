@@ -67,29 +67,24 @@ public:
    //
    unordered_set& operator = (unordered_set& rhs) 
    {
-      /*clear();
-      numElements = rhs.numElements;
-      maxLoadFactor = rhs.maxLoadFactor;
-      swap(rhs);
-      return *this;*/
-
       numElements = rhs.numElements;
       for (int i = 0; i < 10; i++)
-      {
          buckets[i] = rhs.buckets[i];
-      }
+      
       return *this;
    }
    unordered_set& operator = (unordered_set&& rhs)
    {
-      numElements = rhs.numElements;
-      clear();
-      swap(rhs);
-      return *this;
+       numElements = std::move(rhs.numElements);
+       rhs.numElements = NULL;
+       for (int i = 0; i < 10; i++)
+           buckets[i] = std::move(rhs.buckets[i]);
+
+       return *this;
    }
    unordered_set& operator = (const std::initializer_list<T>& il) // Initializer List Assign and Fill Assignment
    {
-      clear();
+      //clear();
       reserve(il.size());
       for (T t : il)      
          insert(t);
@@ -103,17 +98,39 @@ public:
    }
 
    // 
+   // Hash
+   //
+
+   size_t hash(const T& value) const {
+       if(buckets->size() > 0)
+            return value % buckets->size();
+       return 0;
+   }
+
+
+   // 
    // Iterator
    //
    class iterator;
    class local_iterator;
    iterator begin()
    {
-      return iterator();
+       /*
+       FOR itBucket = buckets.begin() … buckets.end()
+         IF NOT itBucket.empty()
+            RETURN iterator(buckets.end(), itBucket, itBucket.begin())
+       RETURN end()
+         */
+       auto itBucket = buckets[0].begin(); 
+       /*while ( itBucket < buckets[0].end()) {
+           if (*itBucket.size() > 0)
+               return iterator(buckets + 10, itBucket, itBucket->begin());
+       }*/
+      return end();
    }
    iterator end()
    {
-      return iterator(buckets + 10, buckets+10, buckets[0].end()); 
+      return iterator(buckets + 10, buckets + 10, buckets[0].end()); 
    }
    local_iterator begin(size_t iBucket)
    {
@@ -144,7 +161,7 @@ public:
    // Remove - Steve
    //
    void clear() noexcept { 
-       for (auto bucket : buckets)
+       for (auto& bucket : buckets)
             bucket.clear();
        numElements = 0; 
    }
@@ -157,7 +174,7 @@ public:
    bool empty() const  { return numElements == 0; }
    size_t bucket_count() const
    { 
-      return buckets->size(); 
+      return numElements; 
    }
    size_t bucket_size(size_t i) const
    {
@@ -204,14 +221,16 @@ public:
    iterator& operator = (const iterator& rhs)
    {
        this->itList = rhs.itList;
+       this->pBucket = rhs.pBucket;
+       this->pBucketEnd = rhs.pBucketEnd; 
        return *this;
    }
 
    //
    // Compare
    //
-   bool operator != (const iterator& rhs) const { return (rhs.itList != itList ? true : false); }
-   bool operator == (const iterator& rhs) const { return (rhs.itList == itList ? true : false); }
+   bool operator != (const iterator& rhs) const { return rhs.itList != itList; }
+   bool operator == (const iterator& rhs) const { return rhs.itList == itList; }
 
    // 
    // Access
@@ -275,7 +294,7 @@ public:
    //
    T& operator * ()
    {
-      return itList;
+      return *(this->itList);
    }
 
    // 
@@ -353,7 +372,7 @@ custom::pair<typename custom::unordered_set<T>::iterator, bool> unordered_set<T>
     iBucket = bucket(element)
     */
 
-    auto iBucket = bucket(t);
+    size_t iBucket = bucket(t);
 
     /*
     //See if the element is already there. If so, then return out.
@@ -361,6 +380,16 @@ custom::pair<typename custom::unordered_set<T>::iterator, bool> unordered_set<T>
         IF *it = element
             RETURN pair(itHash, FALSE)
     */
+    std::cout << t << std::endl;
+    auto it = buckets[iBucket].begin();
+    while (it != buckets[iBucket].end())
+    {
+        std::cout << hash(*it) << std::endl;
+        /*if (*it == t)
+            return custom::pair<typename custom::unordered_set<T>::iterator, bool>(hash(*it), false);*/
+        it++;
+    }
+
     /*for (auto it = buckets[iBucket].begin(); it != buckets[iBucket].end(); it++) {
         if (*it == t)
             return custom::pair<typename custom::unordered_set<T>::iterator, bool>(it, false);
@@ -455,13 +484,13 @@ typename unordered_set <T> ::iterator & unordered_set<T>::iterator::operator ++ 
     if (pBucket == pBucketEnd)
         return *this;
 
-    itList++;
+    ++itList;
     if (itList != pBucket->end())
         return *this;
 
-    pBucket++;
+    ++pBucket;
     while (pBucket != pBucketEnd && pBucket->empty())
-        pBucket++;
+        ++pBucket;
 
     if (pBucket != pBucketEnd)
         itList = pBucket->begin();
