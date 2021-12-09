@@ -67,10 +67,17 @@ public:
    //
    unordered_set& operator = (unordered_set& rhs) 
    {
-      clear();
+      /*clear();
       numElements = rhs.numElements;
       maxLoadFactor = rhs.maxLoadFactor;
       swap(rhs);
+      return *this;*/
+
+      numElements = rhs.numElements;
+      for (int i = 0; i < 10; i++)
+      {
+         buckets[i] = rhs.buckets[i];
+      }
       return *this;
    }
    unordered_set& operator = (unordered_set&& rhs)
@@ -91,9 +98,6 @@ public:
    }
    void swap(unordered_set& rhs)
    {
-       /*unordered_set swap = rhs;
-       rhs = *this;
-       *this = swap;*/
        std::swap(this->numElements, rhs.numElements);
        std::swap(this->buckets, rhs.buckets);
    }
