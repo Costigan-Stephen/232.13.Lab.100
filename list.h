@@ -172,10 +172,11 @@ namespace custom
         // postfix increment
         iterator operator ++ (int postfix)
         {
-            if (p->pNext) {
-                p = p->pNext;
-                return p;
-            }
+            if(p)
+                if (p->pNext) {
+                    p = p->pNext;
+                    return p;
+                } 
             p = nullptr;
             return p;
         }
@@ -333,6 +334,7 @@ namespace custom
         pHead = pTail = nullptr;
         numElements = 0;
         *this = rhs;
+        
     }
 
     /*****************************************
@@ -471,7 +473,6 @@ namespace custom
     template <typename T>
     void list <T> ::clear()
     {
-        // loop is unnecessary for the checks, but probably good practice
         while (pHead != NULL)
         {
             Node* pDelete = pHead;
