@@ -193,8 +193,8 @@ public:
        this->itList = itList;
    }
    iterator(const iterator& rhs)
-   { 
-       itList = rhs.itList;
+   {
+       *this = rhs;
    }
 
    //
