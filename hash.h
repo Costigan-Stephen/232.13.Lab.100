@@ -40,6 +40,7 @@ public:
    unordered_set()
    {
        numElements = 0;
+       maxLoadFactor = 1.0;
    }
    unordered_set(unordered_set&  rhs) 
    {
@@ -52,7 +53,6 @@ public:
    template <class Iterator>
    unordered_set(Iterator first, Iterator last)
    {
-       //*pHead = pTail = nullptr;
        numElements = 0;
        auto it = first;
        while (it != last)
@@ -421,6 +421,12 @@ template <typename T>
 void unordered_set<T>::insert(const std::initializer_list<T> & il)
 {
     // REHASH
+
+    // don't know if this helps, intent was to catch empty il's
+    if (il.size() == 0) {
+        clear();
+        return;
+    }
     /*
     If the current bucket count is sufficient, then do nothing.
     IF numBuckets <= bucket_count()
@@ -441,7 +447,9 @@ void unordered_set<T>::insert(const std::initializer_list<T> & il)
     FOREACH element IN hash
         bucketsNew[hash(element) % numBuckets].push_back(element)
     */
-
+    for (T e : il) {
+        bucketNew[hash(e) % bucket_count()].push_back(e);
+    }
 
 
     /*
