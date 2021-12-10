@@ -155,9 +155,8 @@ public:
    //
    size_t bucket(const T& t)
    {
-       auto cheese = bucket_count();
-       
-      return hash(t) % bucket_count();
+        //auto cheese = bucket_count();
+        return hash(t) % bucket_count();
    }
    iterator find(const T& t);
 
@@ -215,7 +214,9 @@ public:
    // 
    // Construct
    //
-   iterator() { itList = nullptr;}
+    iterator() : itList(nullptr), pBucket(nullptr), pBucketEnd(nullptr) {
+        
+    }
    iterator(typename custom::list<T>* pBucket,
             typename custom::list<T>* pBucketEnd,
             typename custom::list<T>::iterator itList)
@@ -305,7 +306,7 @@ public:
    //
    T& operator * ()
    {
-      return *(this->itList);
+      return *itList;
    }
 
    // 
@@ -318,7 +319,7 @@ public:
    }
    local_iterator operator ++ (int postfix)
    {
-       local_iterator it = *this;
+       auto it = *this;
        ++(*this);
        return it;
    }
@@ -392,11 +393,9 @@ void unordered_set<T>::insert(const std::initializer_list<T> & il)
     
     // REHASH
  
-    // don't know if this helps, intent was to catch empty il's
-    if (il.size() == 0) {
-        clear();
-        return;
-    }
+    // clear current to make room
+    clear();
+
     /*
     If the current bucket count is sufficient, then do nothing.
     IF numBuckets <= bucket_count()
@@ -410,7 +409,7 @@ void unordered_set<T>::insert(const std::initializer_list<T> & il)
     bucketNew = ALLOCATE(numBuckets)
     */
     
-    custom::list<T> bucketNew = ALLOC(bucket_count());
+    //custom::list<T> bucketNew = ALLOC(bucket_count());
  
     /*
     //Insert the elmements into the new hash table, one at a time.
@@ -418,7 +417,7 @@ void unordered_set<T>::insert(const std::initializer_list<T> & il)
         bucketsNew[hash(element) % numBuckets].push_back(element)
     */
     for (T e : il) {
-        bucketNew[hash(e) % bucket_count()].push_back(e);
+        insert(e);
     }
  
  
@@ -426,7 +425,7 @@ void unordered_set<T>::insert(const std::initializer_list<T> & il)
     //Swap the old bucket for the new.
     swap(buckets, bucketsNew)
     */
-    swap(bucketNew);
+    //swap(bucketNew);
 }
 
 /*****************************************
@@ -484,7 +483,7 @@ typename unordered_set <T> ::iterator & unordered_set<T>::iterator::operator ++ 
  * Stand-alone unordered set swap
  ****************************************/
 template <typename T>
-void swap(unordered_set<T>& lhs, unordered_set<T>& rhs)
+void swap(unordered_set<T>& lhs, unordered_set<T>& rhs) 
 {
     std::swap(lhs.numElements, rhs.numElements);
     std::swap(lhs.buckets, rhs.buckets);  
