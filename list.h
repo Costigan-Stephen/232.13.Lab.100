@@ -410,7 +410,7 @@ namespace custom
     list <T>& list <T> :: operator = (list <T>&& rhs)
     {
         clear();
-        swap(rhs);
+        swap(*this,rhs);
 
         return *this;
     }

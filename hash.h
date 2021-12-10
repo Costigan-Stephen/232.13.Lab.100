@@ -41,6 +41,7 @@ public:
    {
        numElements = 0;
        maxLoadFactor = 1.0;
+       
    }
    unordered_set(unordered_set&  rhs) 
    {
@@ -78,8 +79,10 @@ public:
        numElements = std::move(rhs.numElements);
        rhs.numElements = NULL;
        for (int i = 0; i < 10; i++)
+       {
            buckets[i] = std::move(rhs.buckets[i]);
-
+       }
+       rhs.numElements = 0;
        return *this;
    }
    unordered_set& operator = (const std::initializer_list<T>& il) // Initializer List Assign and Fill Assignment
