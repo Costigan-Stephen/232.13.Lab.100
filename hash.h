@@ -118,6 +118,8 @@ public:
    class local_iterator;
    iterator begin()
    {
+       if (size() == 0)
+           return end();
        /*
        FOR itBucket = buckets.begin() … buckets.end()
          IF NOT itBucket.empty()
@@ -132,7 +134,7 @@ public:
            if (*itBucket.size() > 0)
                return iterator(buckets + 10, itBucket, itBucket->begin());
        }*/
-      return end();
+      return end(); // should never get here
    }
    iterator end()
    {
