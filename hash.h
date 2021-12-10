@@ -69,7 +69,7 @@ public:
    unordered_set& operator = (unordered_set& rhs) 
    {
       numElements = rhs.numElements; 
-      for (int i = 0; i < 10; i++)
+      for (int i = 0; i < bucket_count(); i++)
          buckets[i] = rhs.buckets[i];
       
       return *this;
@@ -78,7 +78,7 @@ public:
    {
        numElements = std::move(rhs.numElements);
        rhs.numElements = NULL;
-       for (int i = 0; i < 10; i++)
+       for (int i = 0; i < bucket_count(); i++)
        {
            buckets[i] = std::move(rhs.buckets[i]);
        }
@@ -136,7 +136,7 @@ public:
    }
    iterator end()
    {
-      return iterator(buckets + 10, buckets + 10, buckets[0].end()); 
+      return iterator(buckets + bucket_count(), buckets + bucket_count(), buckets[0].end());
       //return iterator(&buckets[bucket_count()], &buckets[bucket_count()], buckets[0].end());
    }
    local_iterator begin(size_t iBucket)
@@ -375,64 +375,23 @@ typename unordered_set <T> ::iterator unordered_set<T>::erase(const T& t)
 template <typename T>
 custom::pair<typename custom::unordered_set<T>::iterator, bool> unordered_set<T>::insert(const T& t)
 {
-    /*
-    //Find the bucket where the new element is to reside.
-    iBucket = bucket(element)
-    */
-
-    size_t iBucket = bucket(t);
-
-    /*
-    //See if the element is already there. If so, then return out.
-    FOR it = buckets[iBucket].begin() … buckets[iBucket].end()
-        IF *it = element
-            RETURN pair(itHash, FALSE)
-    */
-    //std::cout << t << std::endl;
-    auto it = buckets[iBucket].begin();
-    std::string s = typeid(it).name(); // data type of auto
-    //std::cout << s << std::endl;
-
-    while (it != buckets[iBucket].end())
-    {
-        std::cout << *it << std::endl;
-        /*if (*it == t)
-            return custom::pair<typename custom::unordered_set<T>::iterator, bool>(hash(*it), false);*/
-        it++;
-    }
-
-    /*for (auto it = buckets[iBucket].begin(); it != buckets[iBucket].end(); it++) {
+    auto iBucket = bucket(t);
+    for (auto it = buckets[iBucket].begin(); it != buckets[iBucket].end(); ++it)
         if (*it == t)
-            return custom::pair<typename custom::unordered_set<T>::iterator, bool>(it, false);
-    }*/
-    
-
-    /*
-    //Reserve more space if we are already at the limit.
-     
-    IF min_buckets_required(numElements + 1) > bucket_count()
-        reserve(numElements x 2)
-        iBucket = bucket(element)
-    */
-   
-
-    /*
-    //Actually insert the new element on the back of the bucket.
-    buckets[iBucket].push_back(element)
-    numElements++
-    RETURN pair(itHash, TRUE)
-   */
+            return custom::pair<custom::unordered_set<T>::iterator, bool>(iterator(&buckets[iBucket], &buckets[bucket_count()], buckets[iBucket].begin()), false);
 
     buckets[iBucket].push_back(t);
     numElements++;
 
-    return custom::pair<custom::unordered_set<T>::iterator, bool>(iterator(), true);
+    return custom::pair<custom::unordered_set<T>::iterator, bool>(iterator(&buckets[iBucket], &buckets[bucket_count()], buckets[iBucket].rbegin()), true);
+
 }
 template <typename T>
 void unordered_set<T>::insert(const std::initializer_list<T> & il)
 {
+    
     // REHASH
-
+ 
     // don't know if this helps, intent was to catch empty il's
     if (il.size() == 0) {
         clear();
@@ -452,7 +411,7 @@ void unordered_set<T>::insert(const std::initializer_list<T> & il)
     */
     
     custom::list<T> bucketNew = ALLOC(bucket_count());
-
+ 
     /*
     //Insert the elmements into the new hash table, one at a time.
     FOREACH element IN hash
@@ -461,8 +420,8 @@ void unordered_set<T>::insert(const std::initializer_list<T> & il)
     for (T e : il) {
         bucketNew[hash(e) % bucket_count()].push_back(e);
     }
-
-
+ 
+ 
     /*
     //Swap the old bucket for the new.
     swap(buckets, bucketsNew)
