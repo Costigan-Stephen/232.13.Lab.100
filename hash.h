@@ -14,7 +14,7 @@
  *        unordered_set           : A class that represents a hash
  *        unordered_set::iterator : An interator through hash
  * Author
- *    Stephen Costigan, Alexander Dohms, Shaun Crook
+ *    Stephen Costigan, Alexander Dohms, Shaun Crook, Jonathan Colwell 
  ************************************************************************/
 
 #pragma once
@@ -105,9 +105,7 @@ public:
    //
 
    size_t hash(const T& value) const {
-       //if(numElements > 0)
-            return value % bucket_count();
-       //return 0;
+       return value % bucket_count();
    }
 
 
@@ -139,7 +137,6 @@ public:
    iterator end()
    {
       return iterator(buckets + bucket_count(), buckets + bucket_count(), buckets[0].end());
-      //return iterator(&buckets[bucket_count()], &buckets[bucket_count()], buckets[0].end());
    }
    local_iterator begin(size_t iBucket)
    {
