@@ -68,7 +68,7 @@ public:
    //
    unordered_set& operator = (unordered_set& rhs) 
    {
-      numElements = rhs.numElements;
+      numElements = rhs.numElements; 
       for (int i = 0; i < 10; i++)
          buckets[i] = rhs.buckets[i];
       
@@ -105,9 +105,9 @@ public:
    //
 
    size_t hash(const T& value) const {
-       if(numElements > 0)
-            return value % numElements;
-       return 0;
+       //if(numElements > 0)
+            return value % bucket_count();
+       //return 0;
    }
 
 
@@ -124,7 +124,10 @@ public:
             RETURN iterator(buckets.end(), itBucket, itBucket.begin())
        RETURN end()
          */
-       auto itBucket = buckets[0].begin(); 
+       //auto itBucket = buckets[0].begin(); 
+       for (int i = 0; 0 < bucket_count(); i++)
+           if (!buckets[i].empty())
+               return iterator(&buckets[i], &buckets[bucket_count()], buckets[i].begin());
        /*while ( itBucket < buckets[0].end()) {
            if (*itBucket.size() > 0)
                return iterator(buckets + 10, itBucket, itBucket->begin());
@@ -134,14 +137,17 @@ public:
    iterator end()
    {
       return iterator(buckets + 10, buckets + 10, buckets[0].end()); 
+      //return iterator(&buckets[bucket_count()], &buckets[bucket_count()], buckets[0].end());
    }
    local_iterator begin(size_t iBucket)
    {
-      return local_iterator(buckets[iBucket].begin());
+      //return local_iterator(buckets[iBucket].begin());
+      return buckets[iBucket].begin();
    }
    local_iterator end(size_t iBucket)
    {
-      return local_iterator(nullptr);
+       //return local_iterator(nullptr);
+       return buckets[iBucket].end();
    }
 
    //
@@ -149,7 +155,9 @@ public:
    //
    size_t bucket(const T& t)
    {
-      return t % 10;
+       auto cheese = bucket_count();
+       
+      return hash(t) % bucket_count();
    }
    iterator find(const T& t);
 
@@ -177,7 +185,7 @@ public:
    bool empty() const  { return numElements == 0; }
    size_t bucket_count() const
    { 
-      return numElements; 
+      return sizeof(buckets) / sizeof(buckets[0]); 
    }
    size_t bucket_size(size_t i) const
    {
@@ -207,7 +215,7 @@ public:
    // 
    // Construct
    //
-   iterator() { itList = nullptr; }
+   iterator() { itList = nullptr;}
    iterator(typename custom::list<T>* pBucket,
             typename custom::list<T>* pBucketEnd,
             typename custom::list<T>::iterator itList)
@@ -469,7 +477,7 @@ void unordered_set<T>::insert(const std::initializer_list<T> & il)
 template <typename T>
 typename unordered_set <T> ::iterator unordered_set<T>::find(const T& t)
 {
-    auto iBucket = bucket(t);
+    //auto iBucket = bucket(t);
     /*auto it = buckets[iBucket].begin();
     if (t) {
         while (it != buckets[iBucket].end())
@@ -479,7 +487,12 @@ typename unordered_set <T> ::iterator unordered_set<T>::find(const T& t)
             it++;
         }
     }*/
-        
+    auto iBucket = bucket(t);
+    auto itList = buckets[iBucket].find(t);
+
+    if (itList != buckets[iBucket].end())
+        return iterator(&buckets[iBucket], &buckets[bucket_count()], itList);
+
     return end();
 }
 

@@ -84,6 +84,7 @@ namespace custom
         iterator insert(iterator it, const T& data);
         iterator insert(iterator it, T&& data);
 
+        iterator find(const T& data);
         //
         // Remove
         //
@@ -775,6 +776,15 @@ namespace custom
         numElements++;
         return iterator(pNew);
         /*return end();*/
+    }
+    
+    template <typename T>
+    typename list <T> ::iterator list <T> ::find(const T& data)
+    {
+        for (auto it = begin(); it != end(); ++it)
+            if (*it == data)
+                return it;
+        return end();
     }
 
     /**********************************************
