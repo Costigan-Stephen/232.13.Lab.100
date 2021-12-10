@@ -15,7 +15,7 @@
  *        List         : A class that represents a List
  *        ListIterator : An iterator through List
  * Author
- *    Alexander Dohms, Stephen Costigan, Shaun Crook, Jonathan Colwell
+ *    Alexander Dohms, Stephen Costigan, Shaun Crook, Jonathan Colwell 
  ************************************************************************/
 
 #pragma once
@@ -63,7 +63,7 @@ namespace custom
 
         class iterator;
         iterator begin() { return iterator(pHead); }
-        iterator rbegin() { return iterator(); }
+        iterator rbegin() { return iterator(pTail); }
         iterator end() { return iterator(nullptr); }
 
         //
@@ -161,8 +161,8 @@ namespace custom
         }
 
         // equals, not equals operator
-        bool operator != (const iterator& rhs) const { return (rhs.p != p ? true : false); }
-        bool operator == (const iterator& rhs) const { return (rhs.p == p ? true : false); }
+        bool operator != (const iterator& rhs) const { return rhs.p != p; }
+        bool operator == (const iterator& rhs) const { return rhs.p == p; }
 
         // dereference operator, fetch a node
         T& operator * ()
@@ -173,50 +173,38 @@ namespace custom
         // postfix increment
         iterator operator ++ (int postfix)
         {
-            if(p)
-                if (p->pNext) {
-                    p = p->pNext;
-                    return p;
-                } 
-            p = nullptr;
-            return p;
+            iterator it(*this);
+            if (p->pNext)
+                p = p->pNext;
+            return it;
         }
 
         // prefix increment
         iterator& operator ++ ()
         {
-            iterator it = p;
-            if (p)
-                if (p->pNext) {
-                    p = p->pNext;
-                    return it;
-                }
-            p = nullptr;
+            if (p->pNext)
+                p = p->pNext;
+            else
+                p = nullptr;
+
             return *this;
         }
 
         // postfix decrement
         iterator operator -- (int postfix)
         {
-            if (p->pPrev) {
+            iterator it(*this);
+            if (p->pPrev)
                 p = p->pPrev;
-                return p;
-            }
-            p = nullptr;
-            return p;
+
+            return it;
         }
 
         // prefix decrement
         iterator& operator -- ()
         {
-            if (p > 0) {
-                iterator it = p;
-                if (p->pPrev) {
-                    p = p->pPrev;
-                    return it;
-                }
-            }
-            p == nullptr;
+            if (p->pPrev)
+                p = p->pPrev;
             return *this;
         }
 
@@ -265,8 +253,8 @@ namespace custom
     template <class Iterator>
     list <T> ::list(Iterator first, Iterator last)
     {
-        pHead = pTail = nullptr;
-        numElements = 0;
+        /*pHead = pTail = nullptr;
+        numElements = 0;*/
         auto it = first;
         while (it != last)
         {
@@ -282,8 +270,8 @@ namespace custom
     template <typename T>
     list <T> ::list(const std::initializer_list<T>& il)
     {
-        numElements = 0;
-        pHead = pTail = nullptr;
+        /*numElements = 0;
+        pHead = pTail = nullptr;*/
 
         if (il.size() > 0)
         {
@@ -302,7 +290,7 @@ namespace custom
     list <T> ::list(size_t num)
     {
         if (num) {
-            Node* pPrevious = pHead = pTail = new Node(T(0));
+            Node* pPrevious = pHead = pTail = new Node(0);
             pHead->pPrev = nullptr;
 
             for (int i = 1; i < num; i++) {
